@@ -112,6 +112,7 @@ export default function Login(props) {
               <button
                 className="d-block btn btn-lg btn-primary p-1"
                 onClick={logout}
+                type="submit"
               >
                 Log Out
               </button>

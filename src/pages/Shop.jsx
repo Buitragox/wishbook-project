@@ -27,8 +27,8 @@ export default function Shop() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const toggle = () => setDropdownOpen((prevState) => !prevState);
   const [lastClicked, setLastClicked] = useState("Select a genre");
-  const [price, setPrice] = useState("option1");
-  const [language, setLanguage] = useState("option1");
+  const [price, setPrice] = useState("default");
+  const [language, setLanguage] = useState("default");
   const { books, addCart } = useBooks();
   const user = useUser();
   const notify = (flag) => {
@@ -60,18 +60,44 @@ export default function Shop() {
     } else notify(false);
   };
 
+  const show = (index) => {
+    var book = books[index];
+    const bookPrice = parseInt(book.price, 10);
+    var lowPrice = 0;
+    var highPrice = 10000000;
+    if (price === "option1") {
+      lowPrice = 0;
+      highPrice = 10000;
+    } else if (price === "option2") {
+      lowPrice = 10000;
+      highPrice = 25000;
+    } else if (price === "option3") {
+      lowPrice = 25000;
+      highPrice = 50000;
+    } else if (price === "option4") {
+      lowPrice = 50000;
+      highPrice = 100000;
+    } else if (price === "option5") {
+      lowPrice = 100000;
+      highPrice = 10000000;
+    }
+    if (
+      (language === book.language || language === "default") &&
+      bookPrice >= lowPrice &&
+      bookPrice <= highPrice &&
+      (book.genre === lastClicked || lastClicked === "Select a genre")
+    ) {
+      return true;
+    } else return false;
+  };
+
   return (
     <div className="row p-3">
       <ToastContainer />
       <aside className="col-xs-12 col-sm-12 col-md-12 col-lg-2 minwitdh">
         <form className="pt-3" action="" method="get">
           <center>
-            <button
-              className="btn btn-dark pruebaBotonMorado text-nowrap"
-              type="submit"
-            >
-              Apply Filter
-            </button>
+            <h3>Filtros de busqueda</h3>
           </center>
           <h5>Genre</h5>
           <Dropdown isOpen={dropdownOpen} toggle={toggle}>
@@ -79,20 +105,37 @@ export default function Shop() {
               {lastClicked}
             </DropdownToggle>
             <DropdownMenu>
-              <DropdownItem header>Fiction and Literature</DropdownItem>
-              <DropdownItem onClick={() => setLastClicked("Some")}>
-                Some Action
-              </DropdownItem>
-              <DropdownItem onClick={() => setLastClicked("Kids")}>
-                For Kids
+              <DropdownItem onClick={() => setLastClicked("Select a genre")}>
+                Select a genre
               </DropdownItem>
               <DropdownItem divider />
-              <DropdownItem header>Educational</DropdownItem>
-              <DropdownItem onClick={() => setLastClicked("Some")}>
-                Some Action
+              <DropdownItem header>Fiction and Literature</DropdownItem>
+              <DropdownItem onClick={() => setLastClicked("Action")}>
+                Action
               </DropdownItem>
-              <DropdownItem onClick={() => setLastClicked("Foo")}>
-                Foo Action
+              <DropdownItem onClick={() => setLastClicked("Comedy")}>
+                Comedy
+              </DropdownItem>
+              <DropdownItem onClick={() => setLastClicked("Drama")}>
+                Drama
+              </DropdownItem>
+              <DropdownItem onClick={() => setLastClicked("Fantasy")}>
+                Fantasy
+              </DropdownItem>
+              <DropdownItem onClick={() => setLastClicked("Horror")}>
+                Horror
+              </DropdownItem>
+              <DropdownItem onClick={() => setLastClicked("Mistery")}>
+                Mistery
+              </DropdownItem>
+              <DropdownItem onClick={() => setLastClicked("Romantic")}>
+                Romantic
+              </DropdownItem>
+
+              <DropdownItem divider />
+              <DropdownItem header>Educational</DropdownItem>
+              <DropdownItem onClick={() => setLastClicked("Politics")}>
+                Politics
               </DropdownItem>
             </DropdownMenu>
           </Dropdown>
@@ -104,6 +147,19 @@ export default function Shop() {
             hidden
           />
           <h5>Price</h5>
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="radio"
+              name="radioPrice"
+              id="radioPriceDefault"
+              checked={price === "default"}
+              onChange={() => setPrice("default")}
+            />
+            <label class="form-check-label" htmlFor="radioPriceDefault">
+              All prices
+            </label>
+          </div>
           <div class="form-check">
             <input
               class="form-check-input"
@@ -175,9 +231,22 @@ export default function Shop() {
               class="form-check-input"
               type="radio"
               name="radioLanguage"
+              id="radioLanguageDefault"
+              checked={language === "default"}
+              onChange={() => setLanguage("default")}
+            />
+            <label class="form-check-label" htmlFor="radioLanguageDefault">
+              All languages
+            </label>
+          </div>
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="radio"
+              name="radioLanguage"
               id="radioLanguage1"
-              checked={language === "option1"}
-              onChange={() => setLanguage("option1")}
+              checked={language === "Spanish"}
+              onChange={() => setLanguage("Spanish")}
             />
             <label class="form-check-label" htmlFor="radioLanguage1">
               Spanish
@@ -189,8 +258,8 @@ export default function Shop() {
               type="radio"
               name="radioLanguage"
               id="radioLanguage2"
-              checked={language === "option2"}
-              onChange={() => setLanguage("option2")}
+              checked={language === "English"}
+              onChange={() => setLanguage("English")}
             />
             <label class="form-check-label" htmlFor="radioLanguage2">
               English
@@ -202,8 +271,8 @@ export default function Shop() {
               type="radio"
               name="radioLanguage"
               id="radioLanguage3"
-              checked={language === "option3"}
-              onChange={() => setLanguage("option3")}
+              checked={language === "Russian"}
+              onChange={() => setLanguage("Russian")}
             />
             <label class="form-check-label" htmlFor="radioLanguage3">
               Russian
@@ -215,8 +284,8 @@ export default function Shop() {
               type="radio"
               name="radioLanguage"
               id="radioLanguage4"
-              checked={language === "option4"}
-              onChange={() => setLanguage("option4")}
+              checked={language === "German"}
+              onChange={() => setLanguage("German")}
             />
             <label class="form-check-label" htmlFor="radioLanguage4">
               German
@@ -228,38 +297,40 @@ export default function Shop() {
       <div className="col-10 mw-100 fullsize">
         <div className=" row">
           {books.map((elem, index) => {
-            return (
-              <Card className="col-xs-12 col-sm-6 col-md-4 col-lg-4">
-                <CardImg src={elem.img} />
-                <CardBody>
-                  <CardTitle tag="h5">{elem.title}</CardTitle>
-                  <CardSubtitle tag="h6" className="mb-2 text-muted">
-                    {elem.genre}
-                  </CardSubtitle>
-                  <CardText>
-                    <h5>${elem.price}</h5>
-                  </CardText>
-                  <Link
-                    className="btn btn-primary text-nowrap btn-0"
-                    style={{ margin: "10px" }}
-                    to={{
-                      pathname: "/Book/" + elem.id
-                    }}
-                  >
-                    More Details
-                  </Link>
-                  <button
-                    className="btn btn-primary text-nowrap btn-0"
-                    id={elem.id}
-                    onClick={(ev) => {
-                      update(ev.target.id);
-                    }}
-                  >
-                    Add to cart
-                  </button>
-                </CardBody>
-              </Card>
-            );
+            if (show(index))
+              return (
+                <Card className="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                  <CardImg src={elem.img} />
+                  <CardBody>
+                    <CardTitle tag="h5">{elem.title}</CardTitle>
+                    <CardSubtitle tag="h6" className="mb-2 text-muted">
+                      {elem.genre}
+                    </CardSubtitle>
+                    <CardText>
+                      <h5>${elem.price}</h5>
+                    </CardText>
+                    <Link
+                      className="btn btn-primary text-nowrap btn-0"
+                      style={{ margin: "10px" }}
+                      to={{
+                        pathname: "/Book/" + elem.id
+                      }}
+                    >
+                      More Details
+                    </Link>
+                    <button
+                      className="btn btn-primary text-nowrap btn-0"
+                      id={elem.id}
+                      onClick={(ev) => {
+                        update(ev.target.id);
+                      }}
+                    >
+                      Add to cart
+                    </button>
+                  </CardBody>
+                </Card>
+              );
+            else return null;
           })}
         </div>
       </div>

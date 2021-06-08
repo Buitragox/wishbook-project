@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import useBooks from "../hooks/useBooks";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Cart() {
   const [value, setValue] = useState(0);
-  const { cart, removeCart } = useBooks();
+  const { cart, removeCart, emptyCart } = useBooks();
   const [total, setTotal] = useState([]);
   const update = (id) => {
     removeCart(id);
@@ -18,9 +20,23 @@ export default function Cart() {
     setTotal(summ);
   }, [cart]);
 
+  const checkout = () => {
+    emptyCart();
+    toast.success("Thanks for buying!", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined
+    });
+  };
+
   console.log("Este es el carrito: ", cart);
   return (
     <div className="container">
+      <ToastContainer />
       {cart.length === 0 && (
         <div className="vertical-center">
           <center>
@@ -92,9 +108,12 @@ export default function Cart() {
                 <strong>Total ${total}</strong>
               </td>
               <td>
-                <Link className="btn btn-success btn-block">
+                <button
+                  className="btn btn-success btn-block"
+                  onClick={checkout}
+                >
                   Checkout <i className="fa fa-angle-right"></i>
-                </Link>
+                </button>
               </td>
             </tr>
           </tfoot>
