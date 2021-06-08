@@ -11,6 +11,7 @@ import Cart from "./pages/Cart";
 import About from "./pages/About";
 import Help from "./pages/Help";
 import Book from "./pages/Book";
+import NotFound from "./pages/NotFound";
 import Footers from "./components/footer/Footer";
 import BooksContext from "./contexts/BooksContext";
 import "firebase/firestore";
@@ -96,6 +97,7 @@ export default function App() {
                     <Route exact path="/Help" component={Help} />
                     <Route exact path="/Book/:id" component={Book} />
                     <Route exact path="/Cart" component={Cart} />
+                    <Route path="/" component={NotFound} />
                   </Switch>
                 </Suspense>
               </BooksContext.Provider>
