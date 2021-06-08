@@ -42,11 +42,11 @@ export default function Login(props) {
   return (
     <div className="vertical-row">
       {!user.data && (
-        <body className="row">
-          <div className="col-xs-1 col-sm-2 col-md-3 col-lg-4 "></div>
+        <body className="row w-100">
+          <div className="col-xs-2 col-sm-3 col-md-3 col-lg-4"></div>
           <div className="col">
             <body class="text-center-fluid">
-              <div>Welcome. Please login.</div>
+              <div>Welcome. Please log in.</div>
               <div className="form-floating p-1">
                 <input
                   type="email"
@@ -101,7 +101,7 @@ export default function Login(props) {
             </body>
           </div>
 
-          <div className="col-xs-1 col-sm-2 col-md-3 col-lg-4"></div>
+          <div className="col-xs-2 col-sm-3 col-md-3 col-lg-4"></div>
         </body>
       )}
       {user.data && (

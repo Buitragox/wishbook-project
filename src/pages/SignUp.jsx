@@ -50,7 +50,7 @@ export default function SignUp(props) {
   return (
     <div className="vertical-row">
       {!user.data && (
-        <div className="row pt-3 mt-3 align-items-center">
+        <div className="row w-100">
           <div className="col-xs-1 col-sm-2 col-md-3 col-lg-4"></div>
           <div className="col">
             <body class="text-center-fluid">
